@@ -45,7 +45,7 @@ function Sudoku() {
 
   const [solution] = useState(Array.from(sudoku.solution) as Array<CorrectCellContent>);
   const [cells, setCells] = useState(puzzle.map((value) => (value == "-") ? "" : value));
-  const setCell = (idx: number) => { return (value: CellContent) => setCells(current => { current[idx] = value; return current; }) }
+  const setCell = (idx: number) => { return (value: CellContent) => setCells(current => { let arr = [...current]; arr[idx] = value; return arr; }) }
   const GAP = 2;
 
   return (
