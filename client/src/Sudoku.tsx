@@ -6,6 +6,7 @@ import Button from 'react-bootstrap/Button';
 import "./Sudoku.css";
 type CorrectCellContent = "1" | "2" | "3" | "4" | "5" | "6" | "7" | "8" | "9";
 type CellContent = CorrectCellContent | "";
+type Nonuple<T> = [T, T, T, T, T, T, T, T, T];
 
 function isValidCellContent(content: string): content is CellContent {
   return content.length === 0 || (content.length === 1 && "123456789".includes(content));
@@ -46,6 +47,18 @@ function Sudoku() {
     return elem
   }
 
+  function Quadrant(indexes: Nonuple<number>) {
+    return (
+      <>
+        <Stack gap={GAP}>
+          <Stack gap={GAP} direction="horizontal">{Cell(indexes[0])}{Cell(indexes[1])}{Cell(indexes[2])}</Stack>
+          <Stack gap={GAP} direction="horizontal">{Cell(indexes[3])}{Cell(indexes[4])}{Cell(indexes[5])}</Stack>
+          <Stack gap={GAP} direction="horizontal">{Cell(indexes[6])}{Cell(indexes[7])}{Cell(indexes[8])}</Stack>
+        </Stack>
+      </>
+    )
+  }
+
   return (
     <div className="d-flex flex-column min-vh-100 justify-content-center align-items-center">
       <h1>Sudoku</h1>
@@ -64,63 +77,27 @@ function Sudoku() {
       <div className='d-flex'>
         <Stack gap={GAP}>
           <Stack gap={GAP} direction="horizontal">
-            <Stack gap={GAP}>
-              <Stack gap={GAP} direction="horizontal">{Cell(0)}{Cell(1)}{Cell(2)}</Stack>
-              <Stack gap={GAP} direction="horizontal">{Cell(9)}{Cell(10)}{Cell(11)}</Stack>
-              <Stack gap={GAP} direction="horizontal">{Cell(18)}{Cell(19)}{Cell(20)}</Stack>
-            </Stack>
+            {Quadrant([0, 1, 2, 9, 10, 11, 18, 19, 20])}
             <div className="vr" />
-            <Stack gap={GAP}>
-              <Stack gap={GAP} direction="horizontal">{Cell(3)}{Cell(4)}{Cell(5)}</Stack>
-              <Stack gap={GAP} direction="horizontal">{Cell(12)}{Cell(13)}{Cell(14)}</Stack>
-              <Stack gap={GAP} direction="horizontal">{Cell(21)}{Cell(22)}{Cell(23)}</Stack>
-            </Stack>
+            {Quadrant([3, 4, 5, 12, 13, 14, 21, 22, 23])}
             <div className="vr" />
-            <Stack gap={GAP}>
-              <Stack gap={GAP} direction="horizontal">{Cell(6)}{Cell(7)}{Cell(8)}</Stack>
-              <Stack gap={GAP} direction="horizontal">{Cell(15)}{Cell(16)}{Cell(17)}</Stack>
-              <Stack gap={GAP} direction="horizontal">{Cell(24)}{Cell(25)}{Cell(26)}</Stack>
-            </Stack>
+            {Quadrant([6, 7, 8, 15, 16, 17, 24, 25, 26])}
           </Stack>
           <hr className='m-1' />
           <Stack gap={GAP} direction="horizontal">
-            <Stack gap={GAP}>
-              <Stack gap={GAP} direction="horizontal">{Cell(27)}{Cell(28)}{Cell(29)}</Stack>
-              <Stack gap={GAP} direction="horizontal">{Cell(36)}{Cell(37)}{Cell(38)}</Stack>
-              <Stack gap={GAP} direction="horizontal">{Cell(45)}{Cell(46)}{Cell(47)}</Stack>
-            </Stack>
+            {Quadrant([27, 28, 29, 36, 37, 38, 45, 46, 47])}
             <div className="vr" />
-            <Stack gap={GAP}>
-              <Stack gap={GAP} direction="horizontal">{Cell(30)}{Cell(31)}{Cell(32)}</Stack>
-              <Stack gap={GAP} direction="horizontal">{Cell(39)}{Cell(40)}{Cell(41)}</Stack>
-              <Stack gap={GAP} direction="horizontal">{Cell(48)}{Cell(49)}{Cell(50)}</Stack>
-            </Stack>
+            {Quadrant([30, 31, 32, 39, 40, 41, 48, 49, 50])}
             <div className="vr" />
-            <Stack gap={GAP}>
-              <Stack gap={GAP} direction="horizontal">{Cell(33)}{Cell(34)}{Cell(35)}</Stack>
-              <Stack gap={GAP} direction="horizontal">{Cell(42)}{Cell(43)}{Cell(44)}</Stack>
-              <Stack gap={GAP} direction="horizontal">{Cell(51)}{Cell(52)}{Cell(53)}</Stack>
-            </Stack>
+            {Quadrant([33, 34, 35, 42, 43, 44, 51, 52, 53])}
           </Stack>
           <hr className='m-1' />
           <Stack gap={GAP} direction="horizontal">
-            <Stack gap={GAP}>
-              <Stack gap={GAP} direction="horizontal">{Cell(54)}{Cell(55)}{Cell(56)}</Stack>
-              <Stack gap={GAP} direction="horizontal">{Cell(63)}{Cell(64)}{Cell(65)}</Stack>
-              <Stack gap={GAP} direction="horizontal">{Cell(72)}{Cell(73)}{Cell(74)}</Stack>
-            </Stack>
+            {Quadrant([54, 55, 56, 63, 64, 65, 72, 73, 74])}
             <div className="vr" />
-            <Stack gap={GAP}>
-              <Stack gap={GAP} direction="horizontal">{Cell(57)}{Cell(58)}{Cell(59)}</Stack>
-              <Stack gap={GAP} direction="horizontal">{Cell(66)}{Cell(67)}{Cell(68)}</Stack>
-              <Stack gap={GAP} direction="horizontal">{Cell(75)}{Cell(76)}{Cell(77)}</Stack>
-            </Stack>
+            {Quadrant([57, 58, 59, 66, 67, 68, 75, 76, 77])}
             <div className="vr" />
-            <Stack gap={GAP}>
-              <Stack gap={GAP} direction="horizontal">{Cell(60)}{Cell(61)}{Cell(62)}</Stack>
-              <Stack gap={GAP} direction="horizontal">{Cell(69)}{Cell(70)}{Cell(71)}</Stack>
-              <Stack gap={GAP} direction="horizontal">{Cell(78)}{Cell(79)}{Cell(80)}</Stack>
-            </Stack>
+            {Quadrant([60, 61, 62, 69, 70, 71, 78, 79, 80])}
           </Stack>
         </Stack>
       </div>
