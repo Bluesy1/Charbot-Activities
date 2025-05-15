@@ -20,14 +20,17 @@ function Sudoku() {
   const [cells, setCells] = useState(puzzle.map((value) => (value === "-") ? "" : value));
   const [cellReadOnly, setCellReadOnly] = useState(puzzle.map(value => (value !== "-")));
   const [gameOver, setGameOver] = useState(false);
+  const [hasWon, setHasWon] = useState(false);
+  const [isValidating, setIsValidating] = useState(false);
   const GAP = 2;
 
 
   function Cell(index: number) {
     const onChange = (value: string) => {
       if (isValidCellContent(value)) {
-        setCells(current => { let arr = [...current]; arr[index] = value; return arr; })
+        setCells(current => { let arr = [...current]; arr[index] = value; return arr; });
       }
+      setIsValidating(false);
     }
     const isReadOnly = cellReadOnly[index];
     const elem = (
@@ -36,6 +39,7 @@ function Sudoku() {
           value={cells[index]}
           readOnly={gameOver || isReadOnly}
           onChange={e => (onChange(e.target.value))}
+          isInvalid={!isReadOnly && isValidating && solution[index] !== cells[index]}
           style={{
             width: "2em", height: "2em", padding: "8px",
             fontWeight: isReadOnly ? "bold" : "normal",
@@ -62,9 +66,25 @@ function Sudoku() {
   return (
     <div className="d-flex flex-column min-vh-100 justify-content-center align-items-center">
       <h1>Sudoku</h1>
+      {(hasWon) ? (<><h2>Congrats, you solved the Sudoku!</h2></>) : (<></>)}
       <div className='container m-2'>
-        <Button variant="primary" size="sm" className="m-2"> Submit Answer</Button>
-        <Button variant="danger" size="sm" className="m-2" onClick={() => { setCells(solution); setGameOver(true); }}> Reveal Answer</Button >
+        <Button variant="primary" size="sm" className="m-2" onClick={() => {
+          if (gameOver) { return; }
+          setIsValidating(true);
+          if (cells.every((item, idx) => item === solution[idx])) {
+            setGameOver(true);
+            setHasWon(true);
+          } else {
+            setHasWon(false);
+          }
+        }}> Submit Answer</Button>
+        <Button variant="danger" size="sm" className="m-2" onClick={() => {
+          if (gameOver) { return; }
+          setCells(solution);
+          setGameOver(true);
+          setIsValidating(false);
+          setHasWon(false);
+        }}> Reveal Answer</Button >
         <Button variant="warning" size="sm" className="m-2" onClick={() => {
           const newSudoku = getSudoku("hard");
           const newPuzzle = Array.from(sudoku.puzzle) as Array<CellContent | "-">;
@@ -72,6 +92,8 @@ function Sudoku() {
           setCells(newPuzzle.map((value) => (value === "-") ? "" : value));
           setCellReadOnly(newPuzzle.map(value => (value !== "-")))
           setGameOver(false);
+          setIsValidating(false);
+          setHasWon(false);
         }}> New Puzzle</Button >
       </div>
       <div className='d-flex'>
